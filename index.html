@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Blockstail | Contas de Jogos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      color: #00ffd5;
+    }
+
+    header p {
+      max-width: 600px;
+      margin: 10px auto;
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      background: rgba(0,0,0,0.3);
+    }
+
+    nav a {
+      color: #00ffd5;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    section h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #00ffd5;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #00ffd5;
+      color: #000;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.4);
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Blockstail</h1>
+  <p>Contas de jogos prontas, seguras e profissionais. Blox Fruits e muito mais.</p>
+</header>
+
+<nav>
+  <a href="#servicos">Serviços</a>
+  <a href="#planos">Planos</a>
+  <a href="#como-funciona">Como Funciona</a>
+  <a href="#contato">Contato</a>
+</nav>
+
+<section id="servicos">
+  <h2>Serviços</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Blox Fruits</h3>
+      <p>Contas prontas, níveis variados, frutas e espadas aleatórias.</p>
+    </div>
+    <div class="card">
+      <h3>Contas Personalizadas</h3>
+      <p>Level médio ou avançado, de acordo com seu orçamento.</p>
+    </div>
+    <div class="card">
+      <h3>Entrega Rápida</h3>
+      <p>Processo seguro e organizado para cada cliente.</p>
+    </div>
+  </div>
+</section>
+
+<section id="planos">
+  <h2>Planos</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Básico</h3>
+      <p>Level médio</p>
+      <p>Frutas aleatórias</p>
+      <p><strong>R$ 15,00</strong></p>
+      <a class="btn" onclick="comprar('Básico')">Comprar</a>
+    </div>
+
+    <div class="card">
+      <h3>Intermediário</h3>
+      <p>Level alto</p>
+      <p>Melhores frutas</p>
+      <p><strong>R$ 30,00</strong></p>
+      <a class="btn" onclick="comprar('Intermediário')">Comprar</a>
+    </div>
+
+    <div class="card">
+      <h3>Premium</h3>
+      <p>Conta avançada</p>
+      <p>Itens raros</p>
+      <p><strong>R$ 60,00</strong></p>
+      <a class="btn" onclick="comprar('Premium')">Comprar</a>
+    </div>
+  </div>
+</section>
+
+<section id="como-funciona">
+  <h2>Como Funciona</h2>
+  <p style="text-align:center; max-width:700px; margin:auto;">
+    Escolha o plano e finalize sua compra. Em breve, o pagamento será totalmente automatizado.
+  </p>
+</section>
+
+<section id="contato">
+  <h2>Contato</h2>
+  <p style="text-align:center;">
+    Instagram: <strong>@blockstail</strong><br>
+    Pagamento via PIX
+  </p>
+</section>
+
+<footer>
+  © 2025 Blockstail — Todos os direitos reservados.
+</footer>
+
+<script>
+  function comprar(plano) {
+    alert(
+      "Você escolheu o plano: " + plano +
+      "\n\nPagamento automático em breve.\nPor enquanto, finalize pelo Instagram."
+    );
+  }
+</script>
+
+</body>
+        </html>
