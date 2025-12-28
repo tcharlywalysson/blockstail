@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Blockstail | Blox Fruits Store</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ====== ESTILO GERAL ====== */
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b1120;
+  color:#fff;
+}
+header {
+  background:linear-gradient(90deg,#22c55e,#16a34a);
+  padding:20px;
+  text-align:center;
+}
+header h1 { margin:0; }
+nav {
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:10px;
+}
+nav button {
+  background:#020617;
+  color:#fff;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+}
+section { display:none; padding:20px; }
+section.active { display:block; }
+
+/* ====== CARDS ====== */
+.card {
+  background:#020617;
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:20px;
+  box-shadow:0 0 15px #000;
+}
+.card img {
+  width:100%;
+  border-radius:12px;
+}
+.card h3 { color:#22c55e; }
+.price { color:#38bdf8; font-size:20px; }
+button.buy {
+  width:100%;
+  padding:12px;
+  background:#22c55e;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+/* ====== ADMIN ====== */
+input, textarea {
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:8px;
+  border:none;
+}
+.admin-box {
+  background:#020617;
+  padding:15px;
+  border-radius:16px;
+}
+
+/* ====== FOOTER ====== */
+footer {
+  text-align:center;
+  padding:15px;
+  font-size:13px;
+  color:#94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>BLOCKSTAIL</h1>
+  <p>Loja Gamer • Contas Blox Fruits</p>
+  <nav>
+    <button onclick="show('loja')">Loja</button>
+    <button onclick="show('carrinho')">Carrinho</button>
+    <button onclick="show('admin')">Admin</button>
+  </nav>
+</header>
+
+<section id="loja" class="active"></section>
+
+<section id="carrinho">
+  <h2>🛒 Carrinho</h2>
+  <div id="cartItems"></div>
+  <p id="total"></p>
+  <button onclick="finalizar()">Finalizar Compra</button>
+</section>
+
+<section id="admin">
+  <h2>🔐 Painel Admin</h2>
+  <div id="loginAdmin">
+    <input type="password" id="senhaAdmin" placeholder="Senha do admin">
+    <button onclick="login()">Entrar</button>
+  </div>
+
+  <div id="painelAdmin" style="display:none;" class="admin-box">
+    <h3>Adicionar Conta</h3>
+    <input id="nome" placeholder="Nome da conta">
+    <input id="preco" type="number" placeholder="Preço">
+    <input id="estoque" type="number" placeholder="Estoque">
+    <input id="imagem" placeholder="URL da imagem">
+    <textarea id="desc" placeholder="Descrição (uma por linha)"></textarea>
+    <button onclick="addProduto()">Adicionar</button>
+  </div>
+</section>
+
+<footer>
+  <p>Pagamento via PIX</p>
+  <p>Instagram: <strong>@blocks_tail.ofc</strong></p>
+</footer>
+
+<script>
+/* ================= CONFIGURAÇÕES DO DONO ================= */
+const PIX = "15314515431";
+const SENHA_ADMIN = "09122011"; // TROQUE
+/* ======================================================== */
+
+let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+let carrinho = [];
+
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function render(){
+  const loja = document.getElementById("loja");
+  loja.innerHTML = "";
+  produtos.forEach((p,i)=>{
+    loja.innerHTML += `
+      <div class="card">
+        <img src="${p.img}">
+        <h3>${p.nome}</h3>
+        <p>${p.desc.join("<br>")}</p>
+        <p class="price">R$ ${p.preco}</p>
+        <button class="buy" onclick="addCarrinho(${i})">Comprar</button>
+      </div>`;
+  });
+  localStorage.setItem("produtos",JSON.stringify(produtos));
+}
+
+function addCarrinho(i){
+  carrinho.push(produtos[i]);
+  alert("Adicionado ao carrinho!");
+}
+
+function finalizar(){
+  let soma = carrinho.reduce((t,p)=>t+p.preco,0);
+  document.body.innerHTML = `
+    <div style="padding:30px;text-align:center;">
+      <h1>Finalizar Pagamento</h1>
+      <p>Total: R$ ${soma}</p>
+      <p><strong>PIX:</strong><br>${PIX}</p>
+      <p>Envie o comprovante no Instagram</p>
+    </div>`;
+}
+
+function login(){
+  if(document.getElementById("senhaAdmin").value === SENHA_ADMIN){
+    document.getElementById("loginAdmin").style.display="none";
+    document.getElementById("painelAdmin").style.display="block";
+  } else alert("Senha incorreta");
+}
+
+function addProduto(){
+  produtos.push({
+    nome: nome.value,
+    preco: Number(preco.value),
+    estoque: Number(estoque.value),
+    img: imagem.value,
+    desc: desc.value.split("\n")
+  });
+  render();
+  alert("Conta adicionada!");
+}
+
+render();
+</script>
+
+</body>
+</html>
