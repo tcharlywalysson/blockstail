@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Blockstail | Loja Blox Fruits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+body{margin:0;background:#0b0b0b;color:#fff}
+
+header{
+background:linear-gradient(90deg,#b30000,#000);
+padding:15px;
+text-align:center
+}
+
+nav{
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap;
+margin-top:10px
+}
+
+nav button{
+background:#b30000;
+border:none;
+color:#fff;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold
+}
+nav button:hover{background:#ff0000}
+
+section{display:none;padding:20px}
+section.active{display:block}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px
+}
+
+.card{
+background:#151515;
+border:1px solid #b30000;
+border-radius:12px;
+padding:15px;
+box-shadow:0 0 10px #000
+}
+
+.card img{
+width:100%;
+border-radius:8px;
+height:150px;
+object-fit:cover
+}
+
+.badge{
+display:inline-block;
+background:#b30000;
+padding:4px 8px;
+border-radius:5px;
+font-size:12px;
+margin:4px 4px 0 0
+}
+
+button.buy{
+margin-top:10px;
+width:100%;
+background:#b30000;
+border:none;
+color:#fff;
+padding:10px;
+border-radius:6px;
+cursor:pointer
+}
+button.buy:hover{background:#ff0000}
+
+button.remove{
+margin-top:6px;
+width:100%;
+background:#444;
+border:none;
+color:#fff;
+padding:8px;
+border-radius:6px;
+cursor:pointer
+}
+button.remove:hover{background:#777}
+
+input,select,textarea{
+width:100%;
+padding:8px;
+margin-top:6px;
+background:#111;
+color:#fff;
+border:1px solid #444;
+border-radius:6px
+}
+
+.admin-box{
+max-width:420px;
+margin:auto
+}
+
+.hidden{display:none}
+
+footer{
+text-align:center;
+padding:20px;
+color:#888
+}
+footer a{color:#ff4444;text-decoration:none}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🔥 Blockstail – Blox Fruits 🔥</h1>
+<nav>
+<button onclick="show('home')">Início</button>
+<button onclick="show('contas')">Contas</button>
+<button onclick="show('frutas')">Frutas</button>
+<button onclick="show('pacotes')">Pacotes</button>
+<button onclick="show('carrinho')">Carrinho</button>
+<button onclick="show('admin')">Admin</button>
+</nav>
+</header>
+
+<section id="home" class="active">
+<h2>Bem-vindo à Blockstail</h2>
+<p>Venda segura de contas, frutas e pacotes de Blox Fruits.</p>
+</section>
+
+<section id="contas">
+<h2>🧍 Contas</h2>
+<div class="cards" id="contasCards"></div>
+</section>
+
+<section id="frutas">
+<h2>🍍 Frutas</h2>
+<div class="cards" id="frutasCards"></div>
+</section>
+
+<section id="pacotes">
+<h2>🎁 Pacotes</h2>
+<div class="cards" id="pacotesCards"></div>
+</section>
+
+<section id="carrinho">
+<h2>🛒 Carrinho</h2>
+<div id="cartItems"></div>
+<button class="buy" onclick="show('home')">⬅ Voltar</button>
+</section>
+
+<section id="admin">
+<div class="admin-box">
+<h2>🔐 Admin</h2>
+
+<div id="login">
+<input type="password" id="pass" placeholder="Senha do admin">
+<button class="buy" type="button" onclick="login()">Entrar</button>
+</div>
+
+<div id="panel" class="hidden">
+
+<h3>Adicionar Produto</h3>
+
+<select id="cat">
+<option value="contas">Conta</option>
+<option value="frutas">Fruta</option>
+<option value="pacotes">Pacote</option>
+</select>
+
+<input id="name" placeholder="Nome">
+<textarea id="desc" placeholder="Descrição"></textarea>
+<input id="price" placeholder="Preço">
+<input id="stock" placeholder="Estoque">
+<input id="img" placeholder="Link da imagem">
+
+<button class="buy" onclick="add()">Adicionar</button>
+
+<h3 style="margin-top:20px">Remover Produtos</h3>
+<div id="adminList"></div>
+
+<button class="buy" onclick="show('home')">Sair</button>
+</div>
+</div>
+</section>
+
+<footer>
+<p>© Blockstail</p>
+<p>Instagram:
+<a href="https://instagram.com/SEUINSTAGRAM" target="_blank">
+@SEUINSTAGRAM
+</a>
+</p>
+</footer>
+
+<script>
+const ADMIN_PASSWORD="09122011";
+const PIX_KEY="15314515431";
+const INSTAGRAM="blocks_tail.ofc";
+
+let products=JSON.parse(localStorage.getItem("products")||"[]");
+let cart=[];
+
+function show(id){
+document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+render();
+}
+
+function login(){
+const senha=document.getElementById("pass").value.trim();
+if(senha===ADMIN_PASSWORD){
+document.getElementById("login").style.display="none";
+document.getElementById("panel").classList.remove("hidden");
+}else alert("Senha incorreta");
+}
+
+function add(){
+products.push({
+cat:cat.value,
+name:name.value,
+desc:desc.value,
+price:price.value,
+stock:stock.value,
+img:img.value
+});
+localStorage.setItem("products",JSON.stringify(products));
+render();
+alert("Produto adicionado");
+}
+
+function removeProduct(i){
+if(confirm("Remover este produto?")){
+products.splice(i,1);
+localStorage.setItem("products",JSON.stringify(products));
+render();
+}
+}
+
+function render(){
+["contas","frutas","pacotes"].forEach(c=>{
+document.getElementById(c+"Cards").innerHTML="";
+products.filter(p=>p.cat===c).forEach(p=>{
+document.getElementById(c+"Cards").innerHTML+=`
+<div class="card">
+<img src="${p.img||'https://via.placeholder.com/300'}">
+<h3>${p.name}</h3>
+<span class="badge">R$ ${p.price}</span>
+<span class="badge">Estoque: ${p.stock}</span>
+<p>${p.desc}</p>
+<button class="buy" onclick="addToCart('${p.name}')">Comprar</button>
+</div>`;
+});
+});
+
+cartItems.innerHTML=`
+${cart.map(i=>`<p>✔ ${i}</p>`).join("")}
+<hr>
+<p><b>Pix:</b> ${PIX_KEY}</p>
+<button class="buy" onclick="window.open('https://instagram.com/'+INSTAGRAM)">
+Enviar comprovante
+</button>
+`;
+
+adminList.innerHTML="";
+products.forEach((p,i)=>{
+adminList.innerHTML+=`
+<div class="card">
+<b>${p.name}</b>
+<button class="remove" onclick="removeProduct(${i})">Remover</button>
+</div>`;
+});
+}
+
+function addToCart(name){
+cart.push(name);
+show('carrinho');
+}
+
+render();
+</script>
+
+</body>
+</html>
